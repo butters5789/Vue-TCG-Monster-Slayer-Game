@@ -1,7 +1,7 @@
 const { createApp } = Vue;
 let vueApp;
 
-function getAttackValue(min, max) {
+function getRandomValue(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
@@ -26,19 +26,36 @@ vueApp = createApp({
   },
   methods: {
     attackMonster() {
-      const damage = getAttackValue(12, 5);
+      const damage = getRandomValue(12, 5);
       this.monsterHealth = this.monsterHealth - damage;
+
       this.attackPlayer();
-      this.attackRound = this.attackRound + 1;
+      this.incrementAttackRound();
     },
     attackPlayer() {
-      const damage = getAttackValue(15, 8);
+      const damage = getRandomValue(15, 8);
       this.playerHealth = this.playerHealth - damage;
     },
-    specialAttack() {
-      const damage = getAttackValue(10, 25);
-      this.monsterHealth = this.monsterHealth - damage;
+    healPlayer() {
+      const health = getRandomValue(15, 8);
+
+      if (this.playerHealth + health > 100) {
+        this.playerHealth = 100;
+      } else {
+        this.playerHealth = this.playerHealth + health;
+      }
+
       this.attackPlayer();
+      this.incrementAttackRound();
+    },
+    specialAttack() {
+      const damage = getRandomValue(10, 25);
+      this.monsterHealth = this.monsterHealth - damage;
+
+      this.attackPlayer();
+      this.incrementAttackRound();
+    },
+    incrementAttackRound() {
       this.attackRound = this.attackRound + 1;
     },
   },
