@@ -19,9 +19,17 @@ vueApp = createApp({
       return this.attackRound % 3 !== 0;
     },
     monsterHealthBarStyles() {
+      if (this.monsterHealth < 0) {
+        return { width: '0%' };
+      }
+
       return { width: `${this.monsterHealth}%` };
     },
     playerHealthBarStyles() {
+      if (this.playerHealth < 0) {
+        return { width: '0%' };
+      }
+
       return { width: `${this.playerHealth}%` };
     },
   },
@@ -49,6 +57,15 @@ vueApp = createApp({
       this.attackPlayer();
       this.incrementAttackRound();
     },
+    incrementAttackRound() {
+      this.attackRound = this.attackRound + 1;
+    },
+    resetGame() {
+      this.monsterHealth = 100;
+      this.playerHealth = 100;
+      this.attackRound = 0;
+      this.winner = 0;
+    },
     specialAttack() {
       const damage = getRandomValue(10, 25);
       this.monsterHealth = this.monsterHealth - damage;
@@ -56,8 +73,8 @@ vueApp = createApp({
       this.attackPlayer();
       this.incrementAttackRound();
     },
-    incrementAttackRound() {
-      this.attackRound = this.attackRound + 1;
+    surrenderRound() {
+      this.winner = 'Oh no! The Monster Won.';
     },
   },
   watch: {
