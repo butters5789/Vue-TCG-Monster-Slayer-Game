@@ -11,6 +11,7 @@ vueApp = createApp({
       monsterHealth: 100,
       playerHealth: 100,
       attackRound: 0,
+      winner: null,
     };
   },
   computed: {
@@ -57,6 +58,22 @@ vueApp = createApp({
     },
     incrementAttackRound() {
       this.attackRound = this.attackRound + 1;
+    },
+  },
+  watch: {
+    monsterHealth(health) {
+      if (health <= 0 && this.playerHealth <= 0) {
+        this.winner = 'Tie Game!';
+      } else if (health <= 0) {
+        this.winner = 'You Win!';
+      }
+    },
+    playerHealth(health) {
+      if (health <= 0 && this.monsterHealth <= 0) {
+        this.winner = 'Tie Game!';
+      } else if (health <= 0) {
+        this.winner = 'Oh no! The Monster Won.';
+      }
     },
   },
 });
