@@ -8,9 +8,10 @@ function getRandomValue(min, max) {
 vueApp = createApp({
   data() {
     return {
+      attackRound: 0,
+      gamePlayLog: [],
       monsterHealth: 100,
       playerHealth: 100,
-      attackRound: 0,
       winner: null,
     };
   },
@@ -38,12 +39,15 @@ vueApp = createApp({
       const damage = getRandomValue(12, 5);
       this.monsterHealth = this.monsterHealth - damage;
 
+      this.logGamePlay('you', 'attacked', damage);
       this.attackPlayer();
       this.incrementAttackRound();
     },
     attackPlayer() {
       const damage = getRandomValue(15, 8);
       this.playerHealth = this.playerHealth - damage;
+
+      this.logGamePlay('monster', 'attacked', damage);
     },
     healPlayer() {
       const health = getRandomValue(15, 8);
@@ -54,22 +58,32 @@ vueApp = createApp({
         this.playerHealth = this.playerHealth + health;
       }
 
+      this.logGamePlay('you', 'healed', health);
       this.attackPlayer();
       this.incrementAttackRound();
     },
     incrementAttackRound() {
       this.attackRound = this.attackRound + 1;
     },
+    logGamePlay(who, what, value) {
+      this.gamePlayLog.unshift({
+        who,
+        what,
+        value,
+      });
+    },
     resetGame() {
+      this.attackRound = 0;
+      this.gamePlayLog = [];
       this.monsterHealth = 100;
       this.playerHealth = 100;
-      this.attackRound = 0;
       this.winner = 0;
     },
     specialAttack() {
       const damage = getRandomValue(10, 25);
       this.monsterHealth = this.monsterHealth - damage;
 
+      this.logGamePlay('you', 'special attacked', damage);
       this.attackPlayer();
       this.incrementAttackRound();
     },

@@ -44,7 +44,27 @@
       </section>
       <section id="log" class="container">
         <h2>Battle Log</h2>
-        <ul></ul>
+        <ul>
+          <li v-for="log in gamePlayLog" :key="log.who + log.value">
+            <span
+              :class="log.who === 'monster' ? 'log--monster' : 'log--player' "
+            >
+              {{ log.who[0].toUpperCase() + log.who.substr(1) }}
+            </span>
+
+            <template v-if="log.what === 'healed'"> healed </template>
+
+            <template v-else> attacked and did </template>
+
+            <span
+              :class="log.what === 'attacked' ? 'log--damage' : 'log--heal' "
+            >
+              {{ log.value }}%
+            </span>
+
+            <template v-if="log.what === 'attacked'"> damage</template>
+          </li>
+        </ul>
       </section>
     </div>
   </body>
